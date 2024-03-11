@@ -33,7 +33,7 @@ const logout = async (refreshToken) => {
 };
 
 /**
- * Refresh auth tokens
+ * Refresh auth tokens   
  * @param {string} refreshToken
  * @returns {Promise<Object>}
  */
