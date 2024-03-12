@@ -27,12 +27,15 @@ const hospRegister = {
 const cheifDoctorRegister = {
   body: Joi.object().keys({
     cheifDoctorName: Joi.string().required(),
-    cheifDoctoremail: Joi.string().required().email(),
+    cheifDoctorEmail: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     specialization: Joi.string().required(),
     medicalLicenseNumber: Joi.string().required(),
     yearsOfExperience: Joi.number().integer().min(0).required(),
     educationQualifications: Joi.string().required(),
+    workHistory: Joi.string(),
+    specializedTraining: Joi.string(),
+    availability: Joi.string(),
     profilePicture: Joi.string().uri()
   }),
 };

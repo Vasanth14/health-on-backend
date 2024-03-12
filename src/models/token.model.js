@@ -9,9 +9,9 @@ const tokenSchema = mongoose.Schema(
       required: true,
       index: true,
     },
-    user: {
+    hospital: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'User',
+      ref: 'Hospital',
       required: true,
     },
     type: {

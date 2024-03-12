@@ -1,6 +1,6 @@
 const allRoles = {
-  admin: ['getUsers', 'manageUsers'],
-  hospital: ['getUsers', 'manageUsers'],
+  admin: ['getHospitals', 'getHospitals'],
+  hospital: ['createCheifDoctor'],
   cheifDoctor: ['getUsers', 'manageUsers'],
   nurse: ['getUsers', 'manageUsers'],
   patient:[],

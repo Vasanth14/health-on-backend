@@ -10,5 +10,10 @@ router.post('/register', validate(authValidation.hospRegister), hospitalControll
 router.post('/login', validate(authValidation.login), hospitalController.login);
 
 
+router
+  .route('/')
+  .get(auth('getHospitals'), hospitalController.getHospitals);
+
+
 
 module.exports = router;

@@ -3,21 +3,23 @@ const moment = require('moment');
 const httpStatus = require('http-status');
 const config = require('../config/config');
 const userService = require('./user.service');
+const hospitalService = require('./hospital.service');
 const { Token } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
+const Hospital = require('../models/hospital.model');
 
 /**
  * Generate token
- * @param {ObjectId} userId
+ * @param {ObjectId} hospitalId
  * @param {Moment} expires
  * @param {string} type
  * @param {string} [secret]
  * @returns {string}
  */
-const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
+const generateToken = (hospitalId, expires, type, secret = config.jwt.secret) => {
   const payload = {
-    sub: userId,
+    sub: hospitalId,
     iat: moment().unix(),
     exp: expires.unix(),
     type,
@@ -28,16 +30,16 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
 /**
  * Save a token
  * @param {string} token
- * @param {ObjectId} userId
+ * @param {ObjectId} hospitalId
  * @param {Moment} expires
  * @param {string} type
  * @param {boolean} [blacklisted]
  * @returns {Promise<Token>}
  */
-const saveToken = async (token, userId, expires, type, blacklisted = false) => {
+const saveToken = async (token, hospitalId, expires, type, blacklisted = false) => {
   const tokenDoc = await Token.create({
     token,
-    user: userId,
+    hospital: hospitalId,
     expires: expires.toDate(),
     type,
     blacklisted,
@@ -53,7 +55,7 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
  */
 const verifyToken = async (token, type) => {
   const payload = jwt.verify(token, config.jwt.secret);
-  const tokenDoc = await Token.findOne({ token, type, user: payload.sub, blacklisted: false });
+  const tokenDoc = await Token.findOne({ token, type, hospital: payload.sub, blacklisted: false });
   if (!tokenDoc) {
     throw new Error('Token not found');
   }
@@ -62,16 +64,16 @@ const verifyToken = async (token, type) => {
 
 /**
  * Generate auth tokens
- * @param {User} user
+ * @param {Hospital} hospital
  * @returns {Promise<Object>}
  */
-const generateAuthTokens = async (user) => {
+const generateAuthTokens = async (hospital) => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-  const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
+  const accessToken = generateToken(hospital.id, accessTokenExpires, tokenTypes.ACCESS);
 
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
-  const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
-  await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  const refreshToken = generateToken(hospital.id, refreshTokenExpires, tokenTypes.REFRESH);
+  await saveToken(refreshToken, hospital.id, refreshTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {
@@ -87,29 +89,29 @@ const generateAuthTokens = async (user) => {
 
 /**
  * Generate reset password token
- * @param {string} email
+ * @param {string} hospitalEmail
  * @returns {Promise<string>}
  */
-const generateResetPasswordToken = async (email) => {
-  const user = await userService.getUserByEmail(email);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
+const generateResetPasswordToken = async (hospitalEmail) => {
+  const hospital = await hospitalService.getHospitalByEmail(hospitalEmail);
+  if (!hospital) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No hospitals found with this email');
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-  const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
-  await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
+  const resetPasswordToken = generateToken(hospital.id, expires, tokenTypes.RESET_PASSWORD);
+  await saveToken(resetPasswordToken, hospital.id, expires, tokenTypes.RESET_PASSWORD);
   return resetPasswordToken;
 };
 
 /**
  * Generate verify email token
- * @param {User} user
+ * @param {Hospital} hospital
  * @returns {Promise<string>}
  */
-const generateVerifyEmailToken = async (user) => {
+const generateVerifyEmailToken = async (hospital) => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-  const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
-  await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
+  const verifyEmailToken = generateToken(hospital.id, expires, tokenTypes.VERIFY_EMAIL);
+  await saveToken(verifyEmailToken, hospital.id, expires, tokenTypes.VERIFY_EMAIL);
   return verifyEmailToken;
 };
 
