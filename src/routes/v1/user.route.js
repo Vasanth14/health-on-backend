@@ -3,6 +3,7 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const userValidation = require('../../validations/user.validation');
 const userController = require('../../controllers/user.controller');
+const hospitalController = require('../../controllers/hospital.controller')
 
 const router = express.Router();
 
@@ -10,6 +11,8 @@ router
   .route('/')
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+
+router.get('/hospitals', (auth('getHospitals'), hospitalController.getHospitals))
 
 router
   .route('/:userId')
