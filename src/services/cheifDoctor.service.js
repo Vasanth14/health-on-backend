@@ -67,11 +67,11 @@ const queryCheifDoctors = async (filter, options) => {
 
 /**
  * Get cheifDoctor by id
- * @param {ObjectId} id
+ * @param {ObjectId} cheifDoctorId
  * @returns {Promise<CheifDoctor>}
  */
-const getCheifDoctorById = async (id) => {
-    return CheifDoctor.findById(id);
+const getCheifDoctorById = async (cheifDoctorId) => {
+    return CheifDoctor.findById(cheifDoctorId);
 };
 
 
@@ -99,6 +99,38 @@ const loginCheifDoctorWithEmailAndPassword = async (cheifDoctorEmail, password) 
     return cheifDoctor;
 };
 
+/**
+ * Update cheifDoctor by id
+ * @param {ObjectId} cheifDoctorId
+ * @param {Object} updateBody
+ * @returns {Promise<CheifDoctor>}
+ */
+const updateCheifDoctorById = async (cheifDoctorId, updateBody) => {
+    const cheifDoctor = await getCheifDoctorById(cheifDoctorId);
+    if (!cheifDoctor) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'CheifDoctor not found');
+    }
+    if (updateBody.cheifDoctorEmail && (await CheifDoctor.isEmailTaken(updateBody.cheifDoctorEmail, cheifDoctorId))) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+    }
+    Object.assign(cheifDoctor, updateBody);
+    await cheifDoctor.save();
+    return cheifDoctor;
+  };
+
+/**
+ * Delete user by id
+ * @param {ObjectId} cheifDoctorId
+ * @returns {Promise<CheifDoctor>}
+ */
+const deleteUserById = async (cheifDoctorId) => {
+    const cheifDoctor = await getCheifDoctorById(cheifDoctorId);
+    if (!cheifDoctor) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'CheifDoctor not found');
+    }
+    await cheifDoctor.remove();
+    return cheifDoctor;
+  };
 
 module.exports = {
     createCheifDoctor,
@@ -106,4 +138,6 @@ module.exports = {
     getCheifDoctorById,
     getCheifDoctorByEmail,
     loginCheifDoctorWithEmailAndPassword,
+    updateCheifDoctorById,
+    deleteUserById
 };

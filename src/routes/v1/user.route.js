@@ -13,6 +13,7 @@ router
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
 
 router.get('/hospitals', (auth('getHospitals'), hospitalController.getHospitals))
+router.get('/hospitals/:hospitalId', (auth('getHospitals'), hospitalController.getHospital))
 
 router
   .route('/:userId')
