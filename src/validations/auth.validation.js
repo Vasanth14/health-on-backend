@@ -40,6 +40,22 @@ const cheifDoctorRegister = {
   }),
 };
 
+const doctorRegister = {
+  body: Joi.object().keys({
+    doctorName: Joi.string().required(),
+    doctorEmail: Joi.string().required().email(),
+    password: Joi.string().required().custom(password),
+    specialization: Joi.string().required(),
+    medicalLicenseNumber: Joi.string().required(),
+    yearsOfExperience: Joi.number().integer().min(0).required(),
+    educationQualifications: Joi.string().required(),
+    workHistory: Joi.string(),
+    specializedTraining: Joi.string(),
+    availability: Joi.string(),
+    profilePicture: Joi.string().uri()
+  }),
+};
+
 
 const login = {
   body: Joi.object().keys({
@@ -91,4 +107,5 @@ module.exports = {
   verifyEmail,
   hospRegister,
   cheifDoctorRegister,
+  doctorRegister
 };

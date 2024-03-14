@@ -5,6 +5,7 @@ const docsRoute = require('./docs.route');
 const hospitalRoute = require('./hospitalRoute.route')
 // const cheifDoctor = require('./cheifDoctor.route')
 const cheifDoctorRoute = require('./cheifDoctor.route')
+const doctorRoute = require('./doctor.route')
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -25,6 +26,10 @@ const defaultRoutes = [
   {
     path: '/cheifDoctors',
     route: cheifDoctorRoute,
+  },
+  {
+    path: '/doctor',
+    route: doctorRoute,
   },
 ];
 
