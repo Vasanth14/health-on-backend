@@ -67,7 +67,7 @@ const cheifDoctorSchema = mongoose.Schema({
         type: String,
     },
     hospital: {
-        id: {
+        hospitalId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Hospital',
             required: true
@@ -77,10 +77,9 @@ const cheifDoctorSchema = mongoose.Schema({
             required: true,
             trim: true,
         },
-        hospitalEmail: {
+        hospitalEmailAddress: {
             type: String,
             required: true,
-            unique: true,
             trim: true,
             lowercase: true,
             validate(value) {
@@ -97,7 +96,6 @@ const cheifDoctorSchema = mongoose.Schema({
         hospitalRegId: {
             type: String,
             required: true,
-            unique: true,
             trim: true,
         },
         hospitalType: {

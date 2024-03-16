@@ -31,9 +31,9 @@ const createDoctor = async (doctorBody, hospitalId) => {
         const doctor = new Doctor({
             ...doctorBody,
             hospital: {
-                id: hospital._id,
+                hospitalId: hospital._id,
                 hospitalName: hospital.hospitalName,
-                hospitalEmail: hospital.hospitalEmail,
+                hospitalEmailAddress: hospital.hospitalEmail,
                 hospitalLocation: hospital.hospitalLocation,
                 hospitalRegId: hospital.hospitalRegId,
                 hospitalType: hospital.hospitalType,

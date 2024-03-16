@@ -30,9 +30,9 @@ const createCheifDoctor = async (cheifDoctorBody, hospitalId) => {
         const cheifDoctor = new CheifDoctor({
             ...cheifDoctorBody,
             hospital: {
-                id: hospital._id,
+                hospitalId: hospital._id,
                 hospitalName: hospital.hospitalName,
-                hospitalEmail: hospital.hospitalEmail,
+                hospitalEmailAddress: hospital.hospitalEmail,
                 hospitalLocation: hospital.hospitalLocation,
                 hospitalRegId: hospital.hospitalRegId,
                 hospitalType: hospital.hospitalType,
