@@ -52,6 +52,35 @@ const createDoctor = async (doctorBody, hospitalId) => {
 
 
 /**
+* Query for Doctors
+* @param {Object} filter - Mongo filter
+* @param {Object} options - Query options
+* @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+* @param {number} [options.limit] - Maximum number of results per page (default = 10)
+* @param {number} [options.page] - Current page (default = 1)
+* @returns {Promise<QueryResult>}
+*/
+const queryDoctors = async (filter, options) => {
+    const doctor = await Doctor.paginate(filter, options);
+    return doctor;
+};
+
+
+/**
+* Query for Hospital's Doctors
+* @param {Object} filter - Mongo filter
+* @param {Object} options - Query options
+* @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+* @param {number} [options.limit] - Maximum number of results per page (default = 10)
+* @param {number} [options.page] - Current page (default = 1)
+* @returns {Promise<QueryResult>}
+*/
+const queryHospitalDoctors = async (filter, options) => {
+    const doctor = await Doctor.paginate({ ...filter, hospitalId: filter.hospitalId }, options);
+    return doctor;
+};
+
+/**
  * Get Doctor by id
  * @param {ObjectId} doctorId
  * @returns {Promise<Doctor>}
@@ -123,6 +152,8 @@ const deleteDoctorById = async (doctorId) => {
 module.exports = {
     createDoctor,
     getDoctorByEmail,
+    queryDoctors,
+    queryHospitalDoctors,
     loginDoctorWithEmailAndPassword,
     updateDoctorById,
     getDoctorById,

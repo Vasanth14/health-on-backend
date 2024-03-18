@@ -19,6 +19,22 @@ const login = catchAsync(async (req, res) => {
     res.send({ doctor, tokens });
   });
 
+const getDoctors = catchAsync(async (req, res) => {
+    const filter = pick(req.query, ['name', 'role']);
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+    const result = await doctorService.queryDoctors(filter, options);
+    res.send(result);
+});
+
+
+const getHospitalDoctors = catchAsync(async (req, res) => {
+  const filter = {'hospital.hospitalId' : req.params.hospitalId}
+  console.log(filter)
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const result = await doctorService.queryHospitalDoctors(filter, options);
+  res.send(result);
+});
+
 
 const getDoctor = catchAsync(async (req, res) => {
     const doctor = await doctorService.getDoctorById(req.params.doctorId);
@@ -44,6 +60,8 @@ module.exports = {
     createDoctor,
     login,
     getDoctor,
+    getDoctors,
+    getHospitalDoctors,
     updateDoctor,
     deleteDoctor,
   };

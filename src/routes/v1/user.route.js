@@ -4,6 +4,8 @@ const validate = require('../../middlewares/validate');
 const userValidation = require('../../validations/user.validation');
 const userController = require('../../controllers/user.controller');
 const hospitalController = require('../../controllers/hospital.controller')
+const doctorController = require('../../controllers/doctor.controller')
+const cheifDoctorController = require('../../controllers/cheifDoctor.controller')
 
 const router = express.Router();
 
@@ -14,6 +16,8 @@ router
 
 router.get('/hospitals', (auth('getHospitals'), hospitalController.getHospitals))
 router.get('/hospitals/:hospitalId', (auth('getHospitals'), hospitalController.getHospital))
+router.get('/cheifDoctors', (auth('getCheifDoctors'), cheifDoctorController.getCheifDoctors))
+router.get('/doctors', (auth('getDoctors'), doctorController.getDoctors))
 
 router
   .route('/:userId')

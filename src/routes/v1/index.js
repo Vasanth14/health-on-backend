@@ -28,7 +28,7 @@ const defaultRoutes = [
     route: cheifDoctorRoute,
   },
   {
-    path: '/doctor',
+    path: '/doctors',
     route: doctorRoute,
   },
 ];

@@ -18,6 +18,14 @@ const login = catchAsync(async (req, res) => {
     res.send({ cheifDoctor, tokens });
   });
 
+const getHospitalCheifDoctors = catchAsync(async (req, res) => {
+    const filter = {'hospital.hospitalId' : req.params.hospitalId}
+    console.log(filter)
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+    const result = await cheifDoctorService.queryHospitalCheifDoctors(filter, options);
+    res.send(result);
+});
+
 
 const getCheifDoctors = catchAsync(async (req, res) => {
     const filter = pick(req.query, ['name', 'role']);
@@ -49,6 +57,7 @@ const deleteCheifDoctor = catchAsync(async (req, res) => {
   module.exports = {
     createCheifDoctor,
     login,
+    getHospitalCheifDoctors,
     getCheifDoctors,
     getCheifDoctor,
     updateCheifDoctor,

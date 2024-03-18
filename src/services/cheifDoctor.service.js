@@ -50,6 +50,21 @@ const createCheifDoctor = async (cheifDoctorBody, hospitalId) => {
 };
 
 
+/**
+* Query for Hospital's CheifDoctors
+* @param {Object} filter - Mongo filter
+* @param {Object} options - Query options
+* @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+* @param {number} [options.limit] - Maximum number of results per page (default = 10)
+* @param {number} [options.page] - Current page (default = 1)
+* @returns {Promise<QueryResult>}
+*/
+const queryHospitalCheifDoctors = async (filter, options) => {
+    const cheifDoctor = await CheifDoctor.paginate({ ...filter, hospitalId: filter.hospitalId }, options);
+    return cheifDoctor;
+};
+
+
 
 /**
 * Query for cheifDoctors
@@ -136,6 +151,7 @@ module.exports = {
     createCheifDoctor,
     queryCheifDoctors,
     getCheifDoctorById,
+    queryHospitalCheifDoctors,
     getCheifDoctorByEmail,
     loginCheifDoctorWithEmailAndPassword,
     updateCheifDoctorById,

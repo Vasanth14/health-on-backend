@@ -3,6 +3,7 @@ const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const cheifDoctorValidation = require('../../validations/cheifDoctor.validation')
 const hospitalController = require('../../controllers/hospital.controller')
+const doctorController = require('../../controllers/doctor.controller')
 const cheifDoctorController = require('../../controllers/cheifDoctor.controller')
 const auth = require('../../middlewares/auth');
 
@@ -11,7 +12,11 @@ const router = express.Router();
 router.post('/register', validate(authValidation.hospRegister), hospitalController.createHospital);
 router.post('/login', validate(authValidation.login), hospitalController.login);
 
-router.get('/cheifDoctors', (auth('getCheifDoctors'), cheifDoctorController.getCheifDoctors))
+
+router.get('/cheifDoctors/:hospitalId', (auth('getCheifDoctors'), cheifDoctorController.getHospitalCheifDoctors)) //get all the cheif doctors from the reuqesting hospital
+router.get('/doctors/: ', (auth('getDoctors'), doctorController.getHospitalDoctors)) //get all the doctors from the reuqesting hospital
+
+
 
 router
   .route('/cheifDoctor/:cheifDoctorId')

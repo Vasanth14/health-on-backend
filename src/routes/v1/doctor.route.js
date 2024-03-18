@@ -13,4 +13,10 @@ router.post('/register', auth('createDoctors'), validate(authValidation.doctorRe
 router.post('/login', validate(authValidation.login), doctorController.login);
 
 
+router
+  .route('/doctor/:doctorId')
+  .get(auth('getDoctors'), doctorController.getDoctor)
+  .patch(auth('manageDoctors'), doctorController.updateDoctor) //need to add validations for updateBody later on
+  .delete(auth('manageDoctors'), doctorController.deleteDoctor);
+
 module.exports = router;
