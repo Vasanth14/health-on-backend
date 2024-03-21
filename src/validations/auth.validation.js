@@ -13,8 +13,6 @@ const hospRegister = {
   body: Joi.object().keys({
     hospitalName: Joi.string(),
     hospitalEmail: Joi.string().email(),
-    cheifDoctorName: Joi.string(),
-    cheifDoctorEmail: Joi.string().email(),
     password: Joi.string().custom(password),
     hospitalLocation: Joi.string(),
     hospitalRegId: Joi.string().alphanum().min(5).max(10),

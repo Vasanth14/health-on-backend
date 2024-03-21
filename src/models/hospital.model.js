@@ -23,23 +23,6 @@ const hospitalSchema = mongoose.Schema(
         }
       },
     },
-    cheifDoctorName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    cheifDoctorEmail: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      lowercase: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error('Invalid email');
-        }
-      },
-    },
     password: {
       type: String,
       required: true,

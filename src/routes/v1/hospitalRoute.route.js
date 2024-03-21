@@ -14,7 +14,7 @@ router.post('/login', validate(authValidation.login), hospitalController.login);
 
 
 router.get('/cheifDoctors/:hospitalId', (auth('getCheifDoctors'), cheifDoctorController.getHospitalCheifDoctors)) //get all the cheif doctors from the reuqesting hospital
-router.get('/doctors/: ', (auth('getDoctors'), doctorController.getHospitalDoctors)) //get all the doctors from the reuqesting hospital
+router.get('/doctors/:hospitalId', (auth('getDoctors'), doctorController.getHospitalDoctors)) //get all the doctors from the reuqesting hospital
 
 
 
